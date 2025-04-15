@@ -1,5 +1,7 @@
 "use client";
 
+import { FaGift } from "react-icons/fa";
+
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
 import Confetti from "react-confetti";
@@ -20,7 +22,9 @@ const jokes = [
   "You know you're getting old when the candles cost more than the cake! 🎂😂",
   "At least you're not as old as you will be next year! 🎉",
   "Growing old is mandatory, but growing up is optional! 🤪",
-  "Happy Birthday! You're now one step closer to Velcro shoes. 👴👵",
+  "Birthdays are like software updates. You may not notice the change, but things start lagging!",
+  "Age is just a number… and in your case, a really big one now!🎈",
+
   "Birthdays are nature's way of telling us to eat more cake! 🍰",
 ];
 
@@ -275,70 +279,69 @@ export default function BirthdayPage() {
 
       {/* Floating photos */}
       {hasStartedCelebration && (
-  <div className="absolute inset-0 overflow-hidden z-20">
-    {photoUrls.map((url, i) => {
-      const size = Math.floor(Math.random() * 81) + 50; // Size between 50-130px
-      return (
-        <motion.div
-          key={`photo-${i}`}
-          className="absolute cursor-pointer rounded-lg overflow-hidden shadow-lg"
-          style={{
-            width: `${size}px`,
-            height: `${size}px`,
-            left: `${Math.random() * 90}%`, // Covers full width
-            top: `${Math.random() * 90}%`,  // Covers full height
-            transform: `rotate(${Math.random() * 20 - 10}deg)`,
-            zIndex: 20,
-          }}
-          initial={{ scale: 0 }}
-          animate={{
-            scale: 1,
-            x: [0, Math.random() * 50 - 25, 0], // More movement range
-            y: [0, Math.random() * 50 - 25, 0],
-            rotate: [
-              Math.random() * 10 - 5,
-              Math.random() * 10 - 5,
-              Math.random() * 10 - 5,
-            ],
-          }}
-          transition={{
-            scale: { duration: 0.5, delay: i * 0.1 },
-            x: {
-              duration: Math.random() * 8 + 4, // Slower, natural floating
-              repeat: Infinity,
-              repeatType: "reverse",
-            },
-            y: {
-              duration: Math.random() * 8 + 4,
-              repeat: Infinity,
-              repeatType: "reverse",
-              delay: Math.random() * 2,
-            },
-            rotate: {
-              duration: Math.random() * 8 + 4,
-              repeat: Infinity,
-              repeatType: "reverse",
-            },
-          }}
-          whileHover={{ scale: 1.2, zIndex: 50 }} // Keeps it above others
-          whileTap={{ scale: 0.9 }}
-          onClick={(e) => {
-            e.stopPropagation(); // Prevents accidental event issues
-            playClickSound();
-            showWish(i);
-          }}
-        >
-          <img
-            src={url}
-            alt={`Photo ${i + 1}`}
-            className="w-full h-full object-cover"
-          />
-        </motion.div>
-      );
-    })}
-  </div>
-)}
-
+        <div className="absolute inset-0 overflow-hidden z-20">
+          {photoUrls.map((url, i) => {
+            const size = Math.floor(Math.random() * 81) + 50; // Size between 50-130px
+            return (
+              <motion.div
+                key={`photo-${i}`}
+                className="absolute cursor-pointer rounded-lg overflow-hidden shadow-lg"
+                style={{
+                  width: `${size}px`,
+                  height: `${size}px`,
+                  left: `${Math.random() * 90}%`, // Covers full width
+                  top: `${Math.random() * 90}%`, // Covers full height
+                  transform: `rotate(${Math.random() * 20 - 10}deg)`,
+                  zIndex: 20,
+                }}
+                initial={{ scale: 0 }}
+                animate={{
+                  scale: 1,
+                  x: [0, Math.random() * 50 - 25, 0], // More movement range
+                  y: [0, Math.random() * 50 - 25, 0],
+                  rotate: [
+                    Math.random() * 10 - 5,
+                    Math.random() * 10 - 5,
+                    Math.random() * 10 - 5,
+                  ],
+                }}
+                transition={{
+                  scale: { duration: 0.5, delay: i * 0.1 },
+                  x: {
+                    duration: Math.random() * 8 + 4, // Slower, natural floating
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  },
+                  y: {
+                    duration: Math.random() * 8 + 4,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    delay: Math.random() * 2,
+                  },
+                  rotate: {
+                    duration: Math.random() * 8 + 4,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  },
+                }}
+                whileHover={{ scale: 1.2, zIndex: 50 }} // Keeps it above others
+                whileTap={{ scale: 0.9 }}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevents accidental event issues
+                  playClickSound();
+                  showWish(i);
+                }}
+              >
+                <img
+                  src={url}
+                  alt={`Photo ${i + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Glowing orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
@@ -653,7 +656,7 @@ export default function BirthdayPage() {
           </span>
         </motion.button>
       )}
-  
+
       {hasStartedCelebration && (
         <motion.div
           id="joke-container"
@@ -682,6 +685,8 @@ export default function BirthdayPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={toggleGift}
+            role="dialog"
+            aria-modal="true"
           >
             <motion.div
               className="bg-white p-6 sm:p-8 rounded-2xl max-w-md text-center w-full"
@@ -691,6 +696,7 @@ export default function BirthdayPage() {
               transition={{ type: "spring", bounce: 0.5 }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Gift Icon Animation */}
               <motion.div
                 className="relative"
                 initial={{ scale: 0 }}
@@ -702,7 +708,7 @@ export default function BirthdayPage() {
                     className="absolute inset-0 rounded-full"
                     style={{
                       background:
-                        "linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)",
+                        "linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)",
                     }}
                     animate={{
                       scale: [1, 1.2, 1],
@@ -714,29 +720,43 @@ export default function BirthdayPage() {
                       ease: "linear",
                     }}
                   />
-                  <Heart size={40} className="text-white z-10" fill="white" />
+
+                  <motion.div
+                    className="text-white z-10"
+                    animate={{ scale: [1, 1.3, 1], rotate: [0, 30, 0] }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <FaGift size={60} />
+                  </motion.div>
                 </div>
               </motion.div>
 
+              {/* Heading */}
               <motion.h2
-                className="text-2xl font-bold text-purple-700 mt-4 mb-2"
+                className="text-2xl font-bold text-sky-700 mt-4 mb-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                For Sradha!
+                So, the gift found its way to you! 🎁
               </motion.h2>
 
+              {/* Message */}
               <motion.p
-                className="text-purple-600 mb-6"
+                className="text-sky-600 mb-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.7 }}
               >
-                On your special day, may your heart be light, your smile be
-                bright, and your day be as wonderful as you are!
+                Oh wow! So, you got the gift! <br />
+                Scanned the QR code too — that’s how you ended up here, right?
+                😉 <br />
+                Welcome to your special surprise zone! <br />
+                Enjoy it… it’s all made just for <strong>you</strong>. <br />
+                <span className="block mt-2">– Chinu</span>
               </motion.p>
 
+              {/* Button */}
               <motion.div
                 className="flex justify-center gap-4 flex-wrap"
                 initial={{ opacity: 0 }}
@@ -744,7 +764,7 @@ export default function BirthdayPage() {
                 transition={{ delay: 0.9 }}
               >
                 <motion.button
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-6 rounded-full relative overflow-hidden"
+                  className="bg-gradient-to-r from-sky-500 to-blue-500 text-white py-2 px-6 rounded-full relative overflow-hidden"
                   onClick={toggleGift}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
